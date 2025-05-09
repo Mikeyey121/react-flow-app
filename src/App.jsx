@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   ReactFlow,
   Background,
@@ -19,18 +19,73 @@ import './styles/reactflow-custom.css';
 const nodeTypes = { custom: CustomNode };
 const edgeTypes = { custom: CustomEdge };
 
-const initialNodes = [
-  { id: '1', type: 'custom', position: { x: 250, y: 5 }, data: { label: 'ERD 1' } },
-];
+// Load initial state from localStorage or use defaults
+const loadInitialState = () => {
+  try {
+    const savedNodes = localStorage.getItem('erd-nodes');
+    const savedEdges = localStorage.getItem('erd-edges');
+    
+    const parsedNodes = savedNodes ? JSON.parse(savedNodes) : null;
+    const parsedEdges = savedEdges ? JSON.parse(savedEdges) : null;
+    
+    // Validate the loaded data to ensure it's properly formatted
+    if (parsedNodes && Array.isArray(parsedNodes) && parsedNodes.length > 0) {
+      return {
+        nodes: parsedNodes,
+        edges: parsedEdges || []
+      };
+    }
+  } catch (error) {
+    console.error('Failed to load diagram from localStorage', error);
+  }
+  
+  // Return default initial state if loading fails
+  return {
+    nodes: [
+      { id: '1', type: 'custom', position: { x: 250, y: 5 }, data: { label: 'ERD 1' } },
+    ],
+    edges: []
+  };
+};
 
-const initialEdges = [];
+// Simple debounce function
+const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
 
 const AppContent = () => {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  // Load initial state from localStorage
+  const initialState = loadInitialState();
+  const [nodes, setNodes] = useState(initialState.nodes);
+  const [edges, setEdges] = useState(initialState.edges);
   const { screenToFlowPosition } = useReactFlow();
   const isConnectingRef = useRef(false);
   const reactFlowWrapper = useRef(null);
+
+  // Save to localStorage whenever nodes or edges change
+  useEffect(() => {
+    const saveToStorage = debounce(() => {
+      try {
+        localStorage.setItem('erd-nodes', JSON.stringify(nodes));
+        localStorage.setItem('erd-edges', JSON.stringify(edges));
+        console.log('ERD saved to localStorage');
+      } catch (error) {
+        console.error('Failed to save diagram to localStorage', error);
+      }
+    }, 500); // 500ms debounce to avoid excessive writes
+    
+    saveToStorage();
+    
+    return () => saveToStorage.cancel;
+  }, [nodes, edges]);
 
   // Add new nodes dynamically
   const handlePaneClick = useCallback(
@@ -128,7 +183,7 @@ const AppContent = () => {
           zoomOnScroll={false}
         >
           <Background 
-            color="#60a5fa" 
+            color="#222222" 
             gap={16} 
             size={1} 
             variant="dots" 
