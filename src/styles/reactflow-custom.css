@@ -1,47 +1,92 @@
 /* Create this new file for custom React Flow styling */
 
-/* Modern styling for the React Flow pane */
+/* Absolute minimal styling */
 .react-flow {
-  --bg-color: #ffffff;
-  --text-color: #f8fafc;
-  --edge-color: #3b82f6;
-  --connection-color: #60a5fa;
-  --selection-color: #2563eb;
+  background: white;
 }
 
-/* Style the nodes with a sleek look */
+.react-flow__handle {
+  width: 6px;
+  height: 6px;
+  background: black;
+  border: 1px solid white;
+}
+
+.react-flow__edge-path {
+  stroke: #000;
+  stroke-width: 1.5;
+}
+
+.react-flow__connection-path {
+  stroke: #000;
+  stroke-width: 1.5;
+}
+
+/* Basic node styling */
+.erd-table {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.erd-table > div:first-child {
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Style the nodes with a sleek monochrome look */
 .react-flow__node {
   border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   min-width: 450px;
-  background: transparent !important; /* Make sure node background is transparent */
+  background: transparent !important;
 }
 
-/* Remove the !important and adjust the approach for padding */
 .erd-table {
   margin: 0 !important;
-  padding: 0 !important; /* Reset any padding that might be causing issues */
-  background: #ffffff !important; /* Set explicit white background */
+  padding: 0 !important;
+  background: white;
+  border: 1px solid #E5E5E5;
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Add padding to the internal elements instead */
+/* Add padding to the internal elements */
 .erd-table > div {
   padding-left: 16px;
   padding-right: 16px;
 }
 
-/* Ensure the table header has proper padding */
+/* Ensure the table header has proper padding and styling */
 .erd-table > div:first-child {
-  padding: 12px 16px !important;
+  background-color: #F5F5F5;
+  border-bottom: 1px solid #E5E5E5;
+  padding: 10px;
 }
 
-/* Ensure the fields container has proper padding */
-.erd-table > div:nth-child(2) {
-  padding: 12px 16px !important;
+/* Style the edges with a monochrome look */
+.react-flow__edge-path {
+  stroke: #222222;
+  stroke-width: 2;
 }
 
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke-width: 3;
+  stroke: #000000 !important;
+}
+
+/* Style the connection line */
+.react-flow__connection-path {
+  stroke: #666666 !important;
+  stroke-width: 2;
+}
+
+/* Style the background */
+.react-flow__background {
+  opacity: 0.3;
+}
+
+/* Style the nodes with a sleek look */
 .react-flow__node:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
@@ -64,16 +109,6 @@
   padding: 6px;
   margin: 4px;
   border-radius: 4px;
-}
-
-/* Increase the size and padding of edge handles */
-.react-flow__handle {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--edge-color);
-  border: 2px solid #fff;
-  z-index: 10;
 }
 
 /* Remove hover scaling effect */
@@ -111,34 +146,6 @@
 /* Remove the connecting class styling that causes scaling */
 .react-flow__handle.connecting {
   background-color: #60a5fa;
-}
-
-/* Style the edges with a modern look */
-.react-flow__edge-path {
-  stroke: var(--edge-color);
-  stroke-width: 2;
-  transition: stroke-width 0.2s ease;
-}
-
-.react-flow__edge:hover .react-flow__edge-path {
-  stroke-width: 3;
-}
-
-/* Style the connection line */
-.react-flow__connection-path {
-  stroke: var(--connection-color);
-  stroke-width: 2;
-}
-
-/* Style the selection */
-.react-flow__selection {
-  background: rgba(37, 99, 235, 0.1);
-  border: 1px solid var(--selection-color);
-}
-
-/* Style the background */
-.react-flow__background {
-  opacity: 0.3;
 }
 
 /* Add a subtle grid pattern */

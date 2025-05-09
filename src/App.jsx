@@ -10,15 +10,17 @@ import {
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
-import CustomNode from './CustomNodes';
-import CustomEdge from './CustomEdge';
+import CustomNode from './components/CustomNodes';
+import CustomEdge from './components/CustomEdge';
+import Header from './components/Header';
 import './styles/reactflow-custom.css';
+
 
 const nodeTypes = { custom: CustomNode };
 const edgeTypes = { custom: CustomEdge };
 
 const initialNodes = [
-  { id: '1', type: 'custom', position: { x: 250, y: 5 }, data: { label: 'Start Node' } },
+  { id: '1', type: 'custom', position: { x: 250, y: 5 }, data: { label: 'ERD 1' } },
 ];
 
 const initialEdges = [];
@@ -89,13 +91,21 @@ const AppContent = () => {
   );
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+    <div style={{ 
+      width: '100%', 
+      height: '100%', 
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
       <div
         ref={reactFlowWrapper}
         style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#111827', // Changed to a dark slate/gray (tailwind gray-900)
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          backgroundColor: 'white'
         }}
       >
         <ReactFlow
@@ -108,17 +118,17 @@ const AppContent = () => {
           onConnect={onConnect}
           onPaneClick={handlePaneClick}
           fitView
-          className="react-flow-wrapper"
-          proOptions={{ hideAttribution: true }}
-          style={{
-            backgroundColor: '#aaaaaa', // Matching the container background
+          style={{ 
+            width: '100%', 
+            height: '100%' 
           }}
+          proOptions={{ hideAttribution: true }}
           panOnScroll={true}
           panOnScrollSpeed={0.5}
           zoomOnScroll={false}
         >
           <Background 
-            color="#3b82f6" 
+            color="#60a5fa" 
             gap={16} 
             size={1} 
             variant="dots" 
@@ -130,9 +140,24 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <ReactFlowProvider>
-    <AppContent />
-  </ReactFlowProvider>
+  <div style={{ 
+    display: 'flex', 
+    flexDirection: 'column', 
+    height: '100vh', 
+    overflow: 'hidden'
+  }}>
+    <Header />
+    <div style={{ 
+      flexGrow: 1, 
+      marginTop: '4rem', 
+      height: 'calc(100vh - 4rem)',
+      position: 'relative'
+    }}>
+      <ReactFlowProvider>
+        <AppContent />
+      </ReactFlowProvider>
+    </div>
+  </div>
 );
 
 export default App;
