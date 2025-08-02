@@ -201,7 +201,18 @@ const AppContent = () => {
     }, 0);
   }, []);
   
-
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        saveNow();
+      }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [saveNow]);  
+  
   useEffect(() => {
     setNodes((nds) =>
       nds.map((node) => ({
