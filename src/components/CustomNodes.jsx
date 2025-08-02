@@ -318,15 +318,21 @@ const CustomNode = ({ data }) => {
               onChange={(e) => updateField(field.id, { dataType: e.target.value })}
               className="nodrag"
               style={{
-                width: columnWidths.dataType - 8,
-                border: '1px solid #ddd',
-                borderRadius: '3px',
-                padding: '2px 4px',
+                width: columnWidths.name - 8,
+                border: '1px solid #e2e8f0',
+                borderRadius: '6px',
+                padding: '4px 8px',
                 marginRight: '4px',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                fontSize: '14px'
+                fontSize: '14px',
+                transition: 'all 0.2s ease',
+                '&:focus': {
+                  outline: 'none',
+                  borderColor: '#3182ce',
+                  boxShadow: '0 0 0 3px rgba(49, 130, 206, 0.1)',
+                }
               }}
               title={field.dataType}
             />
