@@ -17,6 +17,7 @@ const CustomNode = ({ data }) => {
 
   // Constants
   const TITLE_MAX_LENGTH = 20;
+  const FIELD_MAX_LENGTH = 18;
 
   // Calculate dynamic width for title input
   const getTitleInputWidth = useCallback(() => {
@@ -70,38 +71,9 @@ const CustomNode = ({ data }) => {
     ]);
   };
 
-  const adjustFieldFontSize = useCallback((fieldId, inputType) => {
-    const input = fieldInputRefs.get(`${fieldId}-${inputType}`);
-    if (!input) return false;
-
-    let fontSize = 14; // Start with slightly smaller default for fields
-    input.style.fontSize = `${fontSize}px`;
-
-    while (input.scrollWidth > input.offsetWidth && fontSize > 8) {
-      fontSize--;
-      input.style.fontSize = `${fontSize}px`;
-    }
-
-    return fontSize === 8 && input.scrollWidth > input.offsetWidth;
-  }, [fieldInputRefs]);
-
   const updateField = (id, updates) => {
     setFields(fields.map(field => {
       if (field.id === id) {
-        // Only update if we're not at minimum font size or if we're deleting characters
-        const currentField = fields.find(f => f.id === id);
-        const inputType = Object.keys(updates)[0];
-        const newValue = updates[inputType];
-        
-        if (inputType === 'name' || inputType === 'dataType') {
-          const input = fieldInputRefs.get(`${id}-${inputType}`);
-          const isAtMinFont = input && input.style.fontSize === '8px';
-          
-          if (isAtMinFont && newValue.length > currentField[inputType].length) {
-            return field;
-          }
-        }
-        
         return { ...field, ...updates };
       }
       return field;
@@ -122,13 +94,7 @@ const CustomNode = ({ data }) => {
     // No longer adjusting font size, just updating value
   }, [tableName]);
 
-  // Adjust font sizes when fields change
-  useEffect(() => {
-    fields.forEach(field => {
-      adjustFieldFontSize(field.id, 'name');
-      adjustFieldFontSize(field.id, 'dataType');
-    });
-  }, [fields, adjustFieldFontSize]);
+  // No longer adjusting font sizes when fields change
 
   return (
     <div className="erd-table" style={{ 
@@ -278,7 +244,7 @@ const CustomNode = ({ data }) => {
               ref={el => fieldInputRefs.set(`${field.id}-name`, el)}
               value={field.name}
               onChange={(e) => updateField(field.id, { name: e.target.value })}
-              maxLength={TITLE_MAX_LENGTH}
+              maxLength={FIELD_MAX_LENGTH}
               className="nodrag"
               style={{
                 width: columnWidths.name - 8,
@@ -305,7 +271,7 @@ const CustomNode = ({ data }) => {
               ref={el => fieldInputRefs.set(`${field.id}-dataType`, el)}
               value={field.dataType}
               onChange={(e) => updateField(field.id, { dataType: e.target.value })}
-              maxLength={TITLE_MAX_LENGTH}
+              maxLength={FIELD_MAX_LENGTH}
               className="nodrag"
               style={{
                 width: columnWidths.name - 8,
