@@ -1,0 +1,42 @@
+/* Custom Edge Styles */
+
+/* Base Edge Styling */
+.custom-edge-base {
+  stroke-width: 2;
+  stroke: #64748b;
+  fill: none; /* Necessary for bezier paths */
+}
+
+/* Cardinality Dropdown Select Styling */
+.custom-edge-select {
+  appearance: none;
+  padding: 4px 30px 4px 10px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  color: #1a202c;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666666'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  position: absolute;
+  min-width: 80px;
+  pointer-events: all;
+  z-index: 1000;
+}
+
+/* Hover effects for dropdowns */
+.custom-edge-select:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Focus effects for dropdowns */
+.custom-edge-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+} 
