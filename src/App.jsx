@@ -126,19 +126,27 @@ const AppContent = () => {
   const onConnect = useCallback(
     (params) => {
       isConnectingRef.current = true;
-
+  
       const newEdge = {
         ...params,
         type: 'custom',
         data: {
           sourceCardinality: '1..1',
           targetCardinality: '1..1',
+          updateEdgeData: (id, newData) => {
+            setEdges((eds) =>
+              eds.map((e) =>
+                e.id === id ? { ...e, data: { ...e.data, ...newData } } : e
+              )
+            );
+          }
         },
       };
       setEdges((eds) => addEdge(newEdge, eds));
     },
     []
   );
+  
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -180,6 +188,25 @@ const AppContent = () => {
       }))
     );
   }, [syncNodeData]);  
+
+  useEffect(() => {
+    setEdges((eds) =>
+      eds.map((edge) => ({
+        ...edge,
+        data: {
+          ...edge.data,
+          updateEdgeData: (id, newData) => {
+            setEdges((currentEdges) =>
+              currentEdges.map((e) =>
+                e.id === id ? { ...e, data: { ...e.data, ...newData } } : e
+              )
+            );
+          },
+        },
+      }))
+    );
+  }, []);
+  
 
   return (
     <div style={{ 

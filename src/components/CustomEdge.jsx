@@ -28,8 +28,22 @@ const CustomEdge = ({
     targetPosition,
   });
 
-  const [sourceCardinality, setSourceCardinality] = useState(data?.sourceCardinality || '1');
-  const [targetCardinality, setTargetCardinality] = useState(data?.targetCardinality || '1');
+  const [sourceCardinality, setSourceCardinalityState] = useState(data?.sourceCardinality || '1');
+  const [targetCardinality, setTargetCardinalityState] = useState(data?.targetCardinality || '1');
+
+  const setSourceCardinality = (value) => {
+    setSourceCardinalityState(value);
+    if (data.updateEdgeData) {
+      data.updateEdgeData(id, { sourceCardinality: value });
+    }
+  };
+
+  const setTargetCardinality = (value) => {
+    setTargetCardinalityState(value);
+    if (data.updateEdgeData) {
+      data.updateEdgeData(id, { targetCardinality: value });
+    }
+  };
 
   return (
     <>
