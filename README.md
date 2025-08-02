@@ -48,10 +48,6 @@ npm install
 npm start
 ```
 
-## 📄 **License**
-
-This project is open source and available under the MIT License.
-
 ---
 
 **Ready to create your ERD?** Visit **[erdsolutions.net](https://erdsolutions.net)** now!
