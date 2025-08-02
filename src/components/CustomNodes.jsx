@@ -101,6 +101,18 @@ const CustomNode = ({ data }) => {
       data.syncNodeData(data.id, { fields });
     }
   }, [fields]);
+
+  useEffect(() => {
+    if (data.registerFlush && data.id) {
+      data.registerFlush(() => {
+        data.syncNodeData(data.id, {
+          label: tableName,
+          fields,
+        });
+      });
+    }
+  }, [data, tableName, fields]);
+  
   
 
   return (

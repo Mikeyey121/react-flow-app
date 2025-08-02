@@ -69,6 +69,16 @@ const AppContent = () => {
   const { screenToFlowPosition } = useReactFlow();
   const isConnectingRef = useRef(false);
   const reactFlowWrapper = useRef(null);
+  const [showSaveAlert, setShowSaveAlert] = useState(false);
+
+  const latestNodesRef = useRef(nodes);
+  const latestEdgesRef = useRef(edges);
+  const nodeFlushersRef = useRef({});
+
+  useEffect(() => {
+    latestNodesRef.current = nodes;
+    latestEdgesRef.current = edges;
+  }, [nodes]);
 
   // Save to localStorage whenever nodes or edges change
   useEffect(() => {
@@ -113,11 +123,16 @@ const AppContent = () => {
             fields: [
               { id: 1, isPK: true, isFK: false, name: 'id', dataType: 'int' },
               { id: 2, isPK: false, isFK: false, name: 'name', dataType: 'varchar(255)' }
-            ]
+            ],
+            syncNodeData, // ✅ include directly
+            registerFlush: (flushFn) => {
+              nodeFlushersRef.current[nextId] = flushFn; // ✅ also include directly
+            },
           },
         };
         return [...prevNodes, newNode];
       });
+      
     },
     [screenToFlowPosition]
   );  
@@ -164,17 +179,27 @@ const AppContent = () => {
         node.id === id ? { ...node, data: { ...node.data, ...newData } } : node
       )
     );
-  }, []);  
+  }, []);
+   
 
   const saveNow = useCallback(() => {
-    try {
-      localStorage.setItem('erd-nodes', JSON.stringify(nodes));
-      localStorage.setItem('erd-edges', JSON.stringify(edges));
-      console.log('ERD manually saved to localStorage');
-    } catch (error) {
-      console.error('Manual save failed', error);
-    }
-  }, [nodes, edges]);
+    // flush all registered node changes first
+    Object.values(nodeFlushersRef.current).forEach((flush) => flush());
+  
+    // wait for the next tick to let React flush state updates
+    setTimeout(() => {
+      try {
+        localStorage.setItem('erd-nodes', JSON.stringify(latestNodesRef.current));
+        localStorage.setItem('erd-edges', JSON.stringify(latestEdgesRef.current));
+        console.log('ERD manually saved to localStorage');
+  
+        setShowSaveAlert(true);
+        setTimeout(() => setShowSaveAlert(false), 2000);
+      } catch (error) {
+        console.error('Manual save failed', error);
+      }
+    }, 0);
+  }, []);
   
 
   useEffect(() => {
@@ -184,10 +209,14 @@ const AppContent = () => {
         data: {
           ...node.data,
           syncNodeData,
+          registerFlush: (flushFn) => {
+            nodeFlushersRef.current[node.id] = flushFn;
+          },
         },
       }))
     );
-  }, [syncNodeData]);  
+  }, [syncNodeData]);
+  
 
   useEffect(() => {
     setEdges((eds) =>
@@ -235,18 +264,38 @@ const AppContent = () => {
           <button
             onClick={saveNow}
             style={{
-              padding: '6px 12px',
+              padding: '10px 20px',
+              fontSize: '16px',
+              fontWeight: 'bold',
               backgroundColor: '#222',
               color: '#fff',
               border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
+              borderRadius: '6px',
+              cursor: 'pointer',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
             }}
+            
             title="Save diagram now"
           >
             Save
           </button>
         </div>
+        {showSaveAlert && (
+          <div style={{
+            position: 'absolute',
+            top: 60,
+            right: 10,
+            backgroundColor: '#4caf50',
+            color: '#fff',
+            padding: '10px 16px',
+            borderRadius: '6px',
+            fontSize: '14px',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+            zIndex: 10
+          }}>
+            Diagram saved!
+          </div>
+        )}
         <ReactFlow
           nodes={nodes}
           edges={edges}
