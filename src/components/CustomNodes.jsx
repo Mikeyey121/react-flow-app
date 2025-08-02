@@ -165,6 +165,7 @@ const CustomNode = ({ data }) => {
           value={tableName}
           onChange={handleTableNameChange}
           className="nodrag"
+          maxLength={18}
           style={{
             textAlign: 'center',
             border: 'none',
