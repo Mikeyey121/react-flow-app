@@ -90,12 +90,18 @@ const CustomNode = ({ data }) => {
     setTableName(newValue);
   };
 
-  // Adjust font size when table name changes
   useEffect(() => {
-    // No longer adjusting font size, just updating value
+    if (data.syncNodeData && data.id) {
+      data.syncNodeData(data.id, { label: tableName });
+    }
   }, [tableName]);
 
-  // No longer adjusting font sizes when fields change
+  useEffect(() => {
+    if (data.syncNodeData && data.id) {
+      data.syncNodeData(data.id, { fields });
+    }
+  }, [fields]);
+  
 
   return (
     <div className="erd-table">

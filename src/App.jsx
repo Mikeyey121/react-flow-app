@@ -94,28 +94,33 @@ const AppContent = () => {
         isConnectingRef.current = false;
         return;
       }
-
+  
       const { top, left } = event.target.getBoundingClientRect();
-
-      try {
-        const position = screenToFlowPosition({
-          x: event.clientX - left,
-          y: event.clientY - top,
-        });
-
+      const position = screenToFlowPosition({
+        x: event.clientX - left,
+        y: event.clientY - top,
+      });
+  
+      setNodes((prevNodes) => {
+        const nextId = `${prevNodes.length + 1}`;
         const newNode = {
-          id: `${nodes.length + 1}`,
+          id: nextId,
           type: 'custom',
           position,
-          data: { label: `ERD ${nodes.length + 1}` },
+          data: {
+            id: nextId,
+            label: `ERD ${nextId}`,
+            fields: [
+              { id: 1, isPK: true, isFK: false, name: 'id', dataType: 'int' },
+              { id: 2, isPK: false, isFK: false, name: 'name', dataType: 'varchar(255)' }
+            ]
+          },
         };
-        setNodes((nds) => [...nds, newNode]);
-      } catch (error) {
-        console.error('Position calculation error:', error);
-      }
+        return [...prevNodes, newNode];
+      });
     },
-    [nodes, screenToFlowPosition]
-  );
+    [screenToFlowPosition]
+  );  
 
   // Handle connecting edges
   const onConnect = useCallback(
@@ -145,6 +150,37 @@ const AppContent = () => {
     []
   );
 
+  const syncNodeData = useCallback((id, newData) => {
+    setNodes((nds) =>
+      nds.map((node) =>
+        node.id === id ? { ...node, data: { ...node.data, ...newData } } : node
+      )
+    );
+  }, []);  
+
+  const saveNow = useCallback(() => {
+    try {
+      localStorage.setItem('erd-nodes', JSON.stringify(nodes));
+      localStorage.setItem('erd-edges', JSON.stringify(edges));
+      console.log('ERD manually saved to localStorage');
+    } catch (error) {
+      console.error('Manual save failed', error);
+    }
+  }, [nodes, edges]);
+  
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          syncNodeData,
+        },
+      }))
+    );
+  }, [syncNodeData]);  
+
   return (
     <div style={{ 
       width: '100%', 
@@ -163,6 +199,27 @@ const AppContent = () => {
           backgroundColor: 'white'
         }}
       >
+        <div style={{ 
+          position: 'absolute',
+          top: 10,
+          right: 10,
+          zIndex: 10
+        }}>
+          <button
+            onClick={saveNow}
+            style={{
+              padding: '6px 12px',
+              backgroundColor: '#222',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+            title="Save diagram now"
+          >
+            Save
+          </button>
+        </div>
         <ReactFlow
           nodes={nodes}
           edges={edges}
