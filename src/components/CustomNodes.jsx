@@ -290,6 +290,7 @@ const CustomNode = ({ data }) => {
               ref={el => fieldInputRefs.set(`${field.id}-name`, el)}
               value={field.name}
               onChange={(e) => updateField(field.id, { name: e.target.value })}
+              maxLength={18}
               className="nodrag"
               style={{
                 width: columnWidths.name - 8,
@@ -316,6 +317,7 @@ const CustomNode = ({ data }) => {
               ref={el => fieldInputRefs.set(`${field.id}-dataType`, el)}
               value={field.dataType}
               onChange={(e) => updateField(field.id, { dataType: e.target.value })}
+              maxLength={18}
               className="nodrag"
               style={{
                 width: columnWidths.name - 8,
