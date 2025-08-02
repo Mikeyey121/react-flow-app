@@ -4,7 +4,7 @@ import { BaseEdge, EdgeLabelRenderer, getBezierPath } from '@xyflow/react';
 const cardinalityOptions = ['0..1', '0..*', '1..1', '1..*'];
 
 // Frozen global constants for dropdown positioning
-const DROPDOWN_HORIZONTAL_OFFSET = 55;
+const DROPDOWN_HORIZONTAL_OFFSET = 50;
 const DROPDOWN_VERTICAL_OFFSET = 20;
 
 const CustomEdge = ({
@@ -39,7 +39,7 @@ const CustomEdge = ({
       border: '1px solid #e2e8f0',
       borderRadius: '6px',
       backgroundColor: 'white',
-      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
       cursor: 'pointer',
       color: '#1a202c',
       transition: 'all 0.2s ease',
@@ -47,14 +47,8 @@ const CustomEdge = ({
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'right 8px center',
       backgroundSize: '12px',
-    },
-    container: {
       position: 'absolute',
-      background: 'white',
-      padding: '4px',
-      borderRadius: '8px',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      fontSize: '12px',
+      minWidth: '80px',
       pointerEvents: 'all',
       zIndex: 1000,
     },
@@ -77,50 +71,36 @@ const CustomEdge = ({
 
       {/* Render cardinality dropdowns */}
       <EdgeLabelRenderer>
-        <div
+        <select
+          value={sourceCardinality}
+          onChange={(e) => setSourceCardinality(e.target.value)}
           style={{
-            ...selectStyles.container,
+            ...selectStyles.select,
             transform: `translate(-50%, -50%) translate(${sourceX + DROPDOWN_HORIZONTAL_OFFSET}px,${sourceY - DROPDOWN_VERTICAL_OFFSET}px)`,
           }}
           className="nodrag nopan"
         >
-          <select
-            value={sourceCardinality}
-            onChange={(e) => setSourceCardinality(e.target.value)}
-            style={{
-              ...selectStyles.select,
-              minWidth: '80px',
-            }}
-          >
             {cardinalityOptions.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </select>
-        </div>
-        <div
+        <select
+          value={targetCardinality}
+          onChange={(e) => setTargetCardinality(e.target.value)}
           style={{
-            ...selectStyles.container,
+            ...selectStyles.select,
             transform: `translate(-50%, -50%) translate(${targetX - DROPDOWN_HORIZONTAL_OFFSET}px,${targetY - DROPDOWN_VERTICAL_OFFSET}px)`,
           }}
           className="nodrag nopan"
         >
-          <select
-            value={targetCardinality}
-            onChange={(e) => setTargetCardinality(e.target.value)}
-            style={{
-              ...selectStyles.select,
-              minWidth: '80px',
-            }}
-          >
             {cardinalityOptions.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
             ))}
           </select>
-        </div>
       </EdgeLabelRenderer>
     </>
   );
