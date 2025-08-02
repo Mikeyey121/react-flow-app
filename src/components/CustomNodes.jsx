@@ -192,8 +192,9 @@ const CustomNode = ({ data }) => {
           marginBottom: '4px',
           position: 'relative'
         }}>
-          <div style={{ width: '60px' }}>PK/FK</div>
+          <div style={{ paddingLeft: '20px', width: '60px' }}>PK/FK</div>
           <div style={{ 
+            paddingLeft: '20px',
             width: columnWidths.name, 
             position: 'relative' 
           }}>
@@ -216,6 +217,7 @@ const CustomNode = ({ data }) => {
             />
           </div>
           <div style={{ 
+            paddingLeft: '15px',
             width: columnWidths.dataType,
             position: 'relative'
           }}>
@@ -262,7 +264,7 @@ const CustomNode = ({ data }) => {
             />
 
             {/* PK/FK Checkboxes */}
-            <div style={{ width: '60px', display: 'flex', gap: '2px' }}>
+            <div style={{ padding: '4px 18px', width: '60px', display: 'flex', gap: '2px' }}>
               <label title="Primary Key">
                 <input
                   type="checkbox"
