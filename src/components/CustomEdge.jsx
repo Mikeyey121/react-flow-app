@@ -3,6 +3,10 @@ import { BaseEdge, EdgeLabelRenderer, getBezierPath } from '@xyflow/react';
 
 const cardinalityOptions = ['0..1', '0..*', '1..1', '1..*'];
 
+// Frozen global constants for dropdown positioning
+const DROPDOWN_HORIZONTAL_OFFSET = 55;
+const DROPDOWN_VERTICAL_OFFSET = 20;
+
 const CustomEdge = ({
   id,
   sourceX,
@@ -76,7 +80,7 @@ const CustomEdge = ({
         <div
           style={{
             ...selectStyles.container,
-            transform: `translate(-50%, -50%) translate(${sourceX + 40}px,${sourceY - 20}px)`,
+            transform: `translate(-50%, -50%) translate(${sourceX + DROPDOWN_HORIZONTAL_OFFSET}px,${sourceY - DROPDOWN_VERTICAL_OFFSET}px)`,
           }}
           className="nodrag nopan"
         >
@@ -98,7 +102,7 @@ const CustomEdge = ({
         <div
           style={{
             ...selectStyles.container,
-            transform: `translate(-50%, -50%) translate(${targetX - 40}px,${targetY - 20}px)`,
+            transform: `translate(-50%, -50%) translate(${targetX - DROPDOWN_HORIZONTAL_OFFSET}px,${targetY - DROPDOWN_VERTICAL_OFFSET}px)`,
           }}
           className="nodrag nopan"
         >
