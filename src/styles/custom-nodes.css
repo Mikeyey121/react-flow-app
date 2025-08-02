@@ -1,0 +1,176 @@
+/* Custom Nodes Styles */
+
+/* Main ERD Table Container */
+.erd-table {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* Table Name Header */
+.erd-table-header {
+  border-bottom: 2px solid #e2e8f0;
+  padding: 12px 8px;
+  background: #f8fafc;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Table Name Input */
+.erd-table-title-input {
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-weight: bold;
+  font-size: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
+  padding: 4px;
+}
+
+.erd-table-title-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+}
+
+/* Table Fields Container */
+.erd-table-fields {
+  padding: 8px;
+}
+
+/* Header Row */
+.erd-table-header-row {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.erd-table-pkfk-header {
+  padding-left: 20px;
+  width: 60px;
+}
+
+.erd-table-name-header {
+  padding-left: 20px;
+  position: relative;
+}
+
+.erd-table-datatype-header {
+  padding-left: 15px;
+  position: relative;
+}
+
+.erd-table-actions-header {
+  width: 30px;
+}
+
+/* Resize Handle */
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background-color: transparent;
+  transition: background-color 0.2s;
+  z-index: 1;
+}
+
+.resize-handle:hover {
+  background-color: #e2e8f0;
+}
+
+/* Field Row */
+.erd-table-field-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+/* PK/FK Checkboxes Container */
+.erd-table-checkboxes {
+  padding: 4px 18px;
+  width: 60px;
+  display: flex;
+  gap: 2px;
+}
+
+/* Field Inputs */
+.erd-table-field-input {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin-right: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.erd-table-field-input:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+/* Delete Button */
+.erd-table-delete-button {
+  padding: 4px 8px;
+  margin-right: 18px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 12px;
+  width: 30px;
+  transition: all 0.2s ease;
+}
+
+.erd-table-delete-button:hover {
+  background: #fecaca;
+}
+
+/* Add Field Button */
+.erd-table-add-button {
+  margin-top: 12px;
+  padding: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.erd-table-add-button:hover {
+  background: #f1f5f9;
+}
+
+/* Handle Styling - Fixed positioning */
+.erd-table .react-flow__handle {
+  background: #555 !important;
+  width: 8px !important;
+  height: 8px !important;
+  z-index: 1000 !important;
+}
+
+.erd-table .react-flow__handle-left {
+  left: -4px !important;
+}
+
+.erd-table .react-flow__handle-right {
+  right: -4px !important;
+} 
