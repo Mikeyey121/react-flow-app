@@ -13,8 +13,17 @@ const CustomNode = ({ data }) => {
   });
   const resizingRef = useRef(null);
   const titleInputRef = useRef(null);
-  const [isFontMinimized, setIsFontMinimized] = useState(false);
   const [fieldInputRefs] = useState(() => new Map());
+
+  // Constants
+  const TITLE_MAX_LENGTH = 20;
+
+  // Calculate dynamic width for title input
+  const getTitleInputWidth = useCallback(() => {
+    const baseWidth = Math.max(tableName.length * 20, 100); // 16px per character, minimum 100px
+    const maxWidth = 400; // Maximum width cap
+    return Math.min(baseWidth, maxWidth);
+  }, [tableName]);
 
   const startResize = (column, e) => {
     e.preventDefault();
@@ -103,37 +112,15 @@ const CustomNode = ({ data }) => {
     setFields(fields.filter(field => field.id !== id));
   };
 
-  const adjustFontSize = useCallback(() => {
-    const input = titleInputRef.current;
-    if (!input) return;
-
-    // Start with the maximum font size
-    let fontSize = 20;
-    input.style.fontSize = `${fontSize}px`;
-
-    // Reduce font size until text fits
-    while (input.scrollWidth > input.offsetWidth && fontSize > 8) {
-      fontSize--;
-      input.style.fontSize = `${fontSize}px`;
-    }
-
-    // Set flag if we hit minimum font size
-    setIsFontMinimized(fontSize === 8 && input.scrollWidth > input.offsetWidth);
-  }, []);
-
   const handleTableNameChange = (e) => {
     const newValue = e.target.value;
-    // Only allow the change if we're not at minimum font size
-    // or if we're deleting characters
-    if (!isFontMinimized || newValue.length < tableName.length) {
-      setTableName(newValue);
-    }
+    setTableName(newValue);
   };
 
   // Adjust font size when table name changes
   useEffect(() => {
-    adjustFontSize();
-  }, [tableName, adjustFontSize]);
+    // No longer adjusting font size, just updating value
+  }, [tableName]);
 
   // Adjust font sizes when fields change
   useEffect(() => {
@@ -165,13 +152,13 @@ const CustomNode = ({ data }) => {
           value={tableName}
           onChange={handleTableNameChange}
           className="nodrag"
-          maxLength={18}
+          maxLength={TITLE_MAX_LENGTH}
           style={{
             textAlign: 'center',
             border: 'none',
             background: 'transparent',
             fontWeight: 'bold',
-            width: '75%',
+            width: getTitleInputWidth(),
             fontSize: '20px',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -179,7 +166,7 @@ const CustomNode = ({ data }) => {
             minWidth: 0,
             padding: '4px'
           }}
-          title={isFontMinimized ? "Maximum length reached" : tableName}
+          title={tableName}
         />
       </div>
 
@@ -291,7 +278,7 @@ const CustomNode = ({ data }) => {
               ref={el => fieldInputRefs.set(`${field.id}-name`, el)}
               value={field.name}
               onChange={(e) => updateField(field.id, { name: e.target.value })}
-              maxLength={18}
+              maxLength={TITLE_MAX_LENGTH}
               className="nodrag"
               style={{
                 width: columnWidths.name - 8,
@@ -318,7 +305,7 @@ const CustomNode = ({ data }) => {
               ref={el => fieldInputRefs.set(`${field.id}-dataType`, el)}
               value={field.dataType}
               onChange={(e) => updateField(field.id, { dataType: e.target.value })}
-              maxLength={18}
+              maxLength={TITLE_MAX_LENGTH}
               className="nodrag"
               style={{
                 width: columnWidths.name - 8,
