@@ -343,6 +343,7 @@ const CustomNode = ({ data }) => {
               className="nodrag"
               style={{
                 padding: '4px 8px',
+                marginRight: '18px',
                 background: '#fee2e2',
                 border: '1px solid #fecaca',
                 borderRadius: '6px',
