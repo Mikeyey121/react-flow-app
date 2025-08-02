@@ -5,7 +5,7 @@ import '../styles/custom-edge.css';
 const cardinalityOptions = ['0..1', '0..*', '1..1', '1..*'];
 
 // Frozen global constants for dropdown positioning
-const DROPDOWN_HORIZONTAL_OFFSET = 50;
+const DROPDOWN_HORIZONTAL_OFFSET = 60;
 const DROPDOWN_VERTICAL_OFFSET = 20;
 
 const CustomEdge = ({
